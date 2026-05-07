@@ -10,6 +10,7 @@ classDiagram
         - int victorias
         - int campeonatos
         - int poles
+        - String urlFoto
     }
     class ModeloCoche{
         - int idModelo
@@ -18,6 +19,7 @@ classDiagram
         - int caballos
         - int velMax
         - double peso
+        - String urlFoto
     }
     class Escuderia{
         - int idEscuderia
@@ -31,6 +33,7 @@ classDiagram
         - String color
         - ModeloCoche coche
         - List<Piloto> pilotos
+        - String urlFoto
     }
     class GranPremio{
         - int idGp
@@ -42,32 +45,27 @@ classDiagram
         - String vueltaRapida
         - Date anioCreacion
         - List<Participacion> participaciones
+        - String urlFoto
     }
     class Participacion{
         - Piloto piloto
-        - GranPremio gp
         - String tiempo
         - int posicion
     }
     class Temporada{
         - int anio
         - List<GranPremio> carreras
-        - int numPilotoGanador
-        - List<Piloto> pilotos
+        - Piloto pilotoGanador
         - List<Escuderia> escuderias
     }
 
-    Piloto --* PilotoFicha
-    Escuderia --* PilotoFicha
-    Temporada --* PilotoFicha
-
-    Piloto --* PilotoParticipa
-    GranPremio --* PilotoParticipa
-
     GranPremio --* Temporada
-    Piloto --* Temporada
+    Piloto --o Temporada
+    Escuderia --* Temporada
 
-    ModeloCoche --* TieneCoche
-    Escuderia --* TieneCoche
-    Temporada --* TieneCoche
+    Piloto --* Participacion
+
+    Participacion --* GranPremio
+
+    ModeloCoche --* Escuderia
 ```
