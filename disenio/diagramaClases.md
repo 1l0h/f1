@@ -29,16 +29,8 @@ classDiagram
         - int campeonatosPilotos
         - int victorias
         - String color
-    }
-    class PilotoFicha{
-        - Piloto piloto
-        - Escuderia escuderia
-        - Temporada temporada
-    }
-    class TieneCoche{
         - ModeloCoche coche
-        - Escuderia escuderia
-        - Temporada temporada
+        - List<Piloto> pilotos
     }
     class GranPremio{
         - int idGp
@@ -49,8 +41,9 @@ classDiagram
         - int vueltas
         - String vueltaRapida
         - Date anioCreacion
+        - List<Participacion> participaciones
     }
-    class PilotoParticipa{
+    class Participacion{
         - Piloto piloto
         - GranPremio gp
         - String tiempo
@@ -61,6 +54,7 @@ classDiagram
         - List<GranPremio> carreras
         - int numPilotoGanador
         - List<Piloto> pilotos
+        - List<Escuderia> escuderias
     }
 
     Piloto --* PilotoFicha
