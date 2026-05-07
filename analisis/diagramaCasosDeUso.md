@@ -1,19 +1,34 @@
 ```mermaid
 flowchart LR
     Usuario["Usuario"]
-    UC1["Consultar info de temporada"]
-    UC2["Consultar info de escuderías"]
-    UC3["Consultar info de pilotos"]
-    UC4["Consultar info de grandes premios"]
-    UC5["Consultar modelo de coche de cada escudería"]
-    UC6["Consultar clasificación de pilotos"]
-    UC7["Consultar clasificación de escuderías"]
-    
-    Usuario --> UC1
-    Usuario --> UC2
-    Usuario --> UC3
-    Usuario --> UC4
-    Usuario --> UC5
-    Usuario --> UC6
-    Usuario --> UC7
+
+    TemporadaCarreras["Consultar carreras de una temporada"]
+    TemporadaCampeon["Consultar piloto campeón de una temporada"]
+    TemporadaPilotos["Consultar pilotos participantes en una temporada"]
+    EscuderiaDatos["Consultar datos generales de una escudería"]
+    EscuderiaStats["Consultar victorias y campeonatos de una escudería"]
+    PilotoDatos["Consultar datos personales de un piloto"]
+    PilotoStats["Consultar estadísticas de un piloto"]
+    PilotoFicha["Consultar ficha de piloto en escudería y temporada"]
+    GPCircuitoDatos["Consultar datos del circuito"]
+    GPResultados["Consultar resultados de un Gran Premio"]
+    CocheSpecs["Consultar especificaciones técnicas del coche por temporada"]
+    ClasificacionPilotos["Consultar clasificación general de pilotos por temporada"]
+    ClasificacionPiloto["Consultar posición de un piloto en un GP"]
+    ClasificacionEscuderia["Consultar clasificación de escuderías por temporada"]
+
+    Usuario --> TemporadaCarreras
+    Usuario --> TemporadaCampeon
+    Usuario --> TemporadaPilotos
+    Usuario --> EscuderiaDatos
+    Usuario --> EscuderiaStats
+    Usuario --> PilotoDatos
+    Usuario --> PilotoStats
+    Usuario --> PilotoFicha
+    Usuario --> GPCircuitoDatos
+    Usuario --> GPResultados
+    Usuario --> CocheSpecs
+    Usuario --> ClasificacionPilotos
+    Usuario --> ClasificacionPiloto
+    Usuario --> ClasificacionEscuderia
 ```
