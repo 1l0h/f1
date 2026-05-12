@@ -7,26 +7,26 @@ USE f1;
 -- =========================
 
 -- Eliminar usuarios si existen
-DROP USER IF EXISTS 'admin_f1'@'localhost';
-DROP USER IF EXISTS 'consulta_f1'@'localhost';
+DROP USER IF EXISTS 'admin_f1'@'%';
+DROP USER IF EXISTS 'consulta_f1'@'%';
 
 -- Crear usuario administrador
-CREATE USER 'admin_f1'@'localhost'
+CREATE USER 'admin_f1'@'%'
 IDENTIFIED BY 'Admin123!';
 
 -- Crear usuario solo lectura
-CREATE USER 'consulta_f1'@'localhost'
+CREATE USER 'consulta_f1'@'%'
 IDENTIFIED BY 'Consulta123!';
 
 -- Permisos para administrador
 GRANT ALL PRIVILEGES
 ON f1.*
-TO 'admin_f1'@'localhost';
+TO 'admin_f1'@'%';
 
 -- Permisos solo lectura
 GRANT SELECT
 ON f1.*
-TO 'consulta_f1'@'localhost';
+TO 'consulta_f1'@'%';
 
 -- Aplicar cambios
 
