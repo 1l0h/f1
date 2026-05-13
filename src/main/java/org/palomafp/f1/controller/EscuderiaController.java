@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/escuderias")
+@RequestMapping("/f1/escuderias")
 @CrossOrigin(origins = "*")
 public class EscuderiaController {
 

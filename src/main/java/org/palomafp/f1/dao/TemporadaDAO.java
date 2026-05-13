@@ -1,30 +1,46 @@
 package org.palomafp.f1.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import org.palomafp.f1.config.DatabaseConfig;
 import org.palomafp.f1.model.Escuderia;
 import org.palomafp.f1.model.GranPremio;
 import org.palomafp.f1.model.Piloto;
 import org.palomafp.f1.model.Temporada;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class TemporadaDAO {
+
+	@Autowired
+	private DatabaseConfig dbConfig;
+
+	private List<Temporada> temporadas;
 
 	private PilotosDAO pilotosDAO;
 	private GranPremioDAO granPremioDAO;
 	private EscuderiaDAO escuderiaDAO;
 
-	public TemporadaDAO(String url, String usuario, String contrasena) {
+	public TemporadaDAO() {
+
+		// String url = dbConfig.getUrl();
+		// String usuario = dbConfig.getUsuario();
+		// String contrasena = dbConfig.getContrasena();
 		// Constructor adaptado para modo mock - no se conecta a BD
-		this.pilotosDAO = new PilotosDAO(url, usuario, contrasena);
-		this.granPremioDAO = new GranPremioDAO(url, usuario, contrasena);
-		this.escuderiaDAO = new EscuderiaDAO(url, usuario, contrasena);
+		// this.pilotosDAO = new PilotosDAO(url, usuario, contrasena);
+		// this.granPremioDAO = new GranPremioDAO(url, usuario, contrasena);
+		// this.escuderiaDAO = new EscuderiaDAO(url, usuario, contrasena);
+
+		this.pilotosDAO = new PilotosDAO(null, null, null);
+		this.granPremioDAO = new GranPremioDAO(null, null, null);
+		this.escuderiaDAO = new EscuderiaDAO(null, null, null);
+
+		rellenarTemporadas();
 	}
 
-	/**
-	 * Obtiene todas las temporadas (DATOS MOCK)
-	 */
-	public ArrayList<Temporada> obtenerTodasTemporadas() {
-		ArrayList<Temporada> temporadas = new ArrayList<>();
+	public void rellenarTemporadas() {
+
+		temporadas = new ArrayList<Temporada>();
 
 		// Temporada 2026
 		Piloto pilotoGanador2026 = pilotosDAO.obtenerPilotoPorNumero(1); // Lando Norris
@@ -46,7 +62,12 @@ public class TemporadaDAO {
 		ArrayList<Escuderia> escuderias2024 = new ArrayList<>(escuderiaDAO.obtenerTodasEscuderias());
 		Temporada temp2024 = new Temporada(2024, carreras2024, escuderias2024, pilotoGanador2024);
 		temporadas.add(temp2024);
+	}
 
+	/**
+	 * Obtiene todas las temporadas (DATOS MOCK)
+	 */
+	public List<Temporada> obtenerTodasTemporadas() {
 		return temporadas;
 	}
 
@@ -54,7 +75,7 @@ public class TemporadaDAO {
 	 * Obtiene una temporada por año (DATOS MOCK)
 	 */
 	public Temporada obtenerTemporadaPorAnio(int anio) {
-		ArrayList<Temporada> todas = obtenerTodasTemporadas();
+		List<Temporada> todas = obtenerTodasTemporadas();
 		for (Temporada t : todas) {
 			if (t.getAnio() == anio) {
 				return t;
