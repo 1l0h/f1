@@ -1,128 +1,88 @@
 package org.palomafp.f1.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 
 import org.palomafp.f1.model.Participacion;
-import org.palomafp.f1.model.Piloto;
 
 public class ParticipacionDAO {
-	private Connection conexion;
 
-	public ParticipacionDAO(String url, String usuario, String contrasena) throws SQLException, ClassNotFoundException {
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		this.conexion = DriverManager.getConnection(url, usuario, contrasena);
+	private PilotosDAO pilotosDAO;
+	private GranPremioDAO granPremioDAO;
+
+	public ParticipacionDAO(String url, String usuario, String contrasena) {
+		// Constructor adaptado para modo mock - no se conecta a BD
+		this.pilotosDAO = new PilotosDAO(url, usuario, contrasena);
+		this.granPremioDAO = new GranPremioDAO(url, usuario, contrasena);
 	}
 
 	/**
-	 * Obtiene todas las participaciones
+	 * Obtiene todas las participaciones (DATOS MOCK)
 	 */
 	public ArrayList<Participacion> obtenerTodasParticipaciones() {
 		ArrayList<Participacion> participaciones = new ArrayList<>();
-		try {
-			String sql = "SELECT p.*, ppgp.posicion, ppgp.tiempo FROM piloto p "
-					+ "JOIN piloto_participa_gp ppgp ON p.numero = ppgp.num_piloto "
-					+ "ORDER BY ppgp.id_gp, ppgp.posicion";
-			Statement declaracion = conexion.createStatement();
-			ResultSet resultado = declaracion.executeQuery(sql);
 
-			while (resultado.next()) {
-				Participacion participacion = construirParticipacion(resultado);
-				participaciones.add(participacion);
-			}
+		// Bahrain - Participaciones
+		participaciones.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(1), "01:28:45", 1));
+		participaciones.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(81), "01:29:15", 2));
+		participaciones.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(33), "01:29:45", 3));
 
-			resultado.close();
-			declaracion.close();
-		} catch (SQLException sqle) {
-			System.err.println("Error al obtener todas las participaciones: " + sqle.getMessage());
-		}
+		// Saudi Arabia - Participaciones
+		participaciones.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(33), "01:51:32", 1));
+		participaciones.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(1), "01:52:10", 2));
+		participaciones.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(16), "01:52:45", 3));
+
+		// Australia - Participaciones
+		participaciones.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(81), "02:27:35", 1));
+		participaciones.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(63), "02:27:50", 2));
+		participaciones.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(44), "02:28:15", 3));
+
 		return participaciones;
 	}
 
 	/**
-	 * Obtiene participaciones de un piloto
+	 * Obtiene participaciones de un piloto (DATOS MOCK)
 	 */
 	public ArrayList<Participacion> obtenerParticipacionesPiloto(int numeroPiloto) {
-		ArrayList<Participacion> participaciones = new ArrayList<>();
-		try {
-			String sql = "SELECT p.*, ppgp.posicion, ppgp.tiempo FROM piloto p "
-					+ "JOIN piloto_participa_gp ppgp ON p.numero = ppgp.num_piloto "
-					+ "WHERE p.numero = ? ORDER BY ppgp.posicion";
-			PreparedStatement ps = conexion.prepareStatement(sql);
-			ps.setInt(1, numeroPiloto);
-			ResultSet resultado = ps.executeQuery();
+		ArrayList<Participacion> resultado = new ArrayList<>();
+		ArrayList<Participacion> todas = obtenerTodasParticipaciones();
 
-			while (resultado.next()) {
-				Participacion participacion = construirParticipacion(resultado);
-				participaciones.add(participacion);
+		for (Participacion p : todas) {
+			if (p.getPiloto().getNumero() == numeroPiloto) {
+				resultado.add(p);
 			}
-
-			resultado.close();
-			ps.close();
-		} catch (SQLException sqle) {
-			System.err.println("Error al obtener participaciones del piloto: " + sqle.getMessage());
 		}
-		return participaciones;
+
+		return resultado;
 	}
 
 	/**
-	 * Obtiene participaciones de un gran premio
+	 * Obtiene participaciones de un gran premio (DATOS MOCK)
 	 */
 	public ArrayList<Participacion> obtenerParticipacionesGranPremio(int idGp) {
 		ArrayList<Participacion> participaciones = new ArrayList<>();
-		try {
-			String sql = "SELECT p.*, ppgp.posicion, ppgp.tiempo FROM piloto p "
-					+ "JOIN piloto_participa_gp ppgp ON p.numero = ppgp.num_piloto "
-					+ "WHERE ppgp.id_gp = ? ORDER BY ppgp.posicion";
-			PreparedStatement ps = conexion.prepareStatement(sql);
-			ps.setInt(1, idGp);
-			ResultSet resultado = ps.executeQuery();
 
-			while (resultado.next()) {
-				Participacion participacion = construirParticipacion(resultado);
-				participaciones.add(participacion);
-			}
-
-			resultado.close();
-			ps.close();
-		} catch (SQLException sqle) {
-			System.err.println("Error al obtener participaciones del GP: " + sqle.getMessage());
+		// Retornar participaciones específicas del GP
+		if (idGp == 1) { // Bahrain
+			participaciones.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(1), "01:28:45", 1));
+			participaciones.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(81), "01:29:15", 2));
+			participaciones.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(33), "01:29:45", 3));
+		} else if (idGp == 2) { // Saudi Arabia
+			participaciones.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(33), "01:51:32", 1));
+			participaciones.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(1), "01:52:10", 2));
+			participaciones.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(16), "01:52:45", 3));
+		} else if (idGp == 3) { // Australia
+			participaciones.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(81), "02:27:35", 1));
+			participaciones.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(63), "02:27:50", 2));
+			participaciones.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(44), "02:28:15", 3));
 		}
+
 		return participaciones;
-	}
-
-	/**
-	 * Construye una participación desde un ResultSet
-	 */
-	private Participacion construirParticipacion(ResultSet resultado) throws SQLException {
-		Piloto piloto = new Piloto(resultado.getInt("numero"), resultado.getString("nombre"),
-				resultado.getString("apellido"), resultado.getString("nacionalidad"),
-				new Date(resultado.getDate("fecha_nacimiento").getTime()), resultado.getInt("podios"),
-				resultado.getInt("victorias"), resultado.getInt("campeonatos"), resultado.getInt("poles"),
-				resultado.getString("foto"));
-
-		String tiempo = resultado.getTime("tiempo") != null ? resultado.getTime("tiempo").toString() : null;
-		int posicion = resultado.getInt("posicion");
-
-		return new Participacion(piloto, tiempo, posicion);
 	}
 
 	/**
 	 * Cierra la conexión a la base de datos
 	 */
 	public void cerrarConexion() {
-		try {
-			if (conexion != null && !conexion.isClosed()) {
-				conexion.close();
-			}
-		} catch (SQLException sqle) {
-			System.err.println("Error al cerrar conexión: " + sqle.getMessage());
-		}
+		// No hay conexión que cerrar en modo mock
 	}
 }

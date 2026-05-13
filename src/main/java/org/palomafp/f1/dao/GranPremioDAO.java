@@ -1,11 +1,6 @@
 package org.palomafp.f1.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -14,178 +9,124 @@ import org.palomafp.f1.model.Participacion;
 import org.palomafp.f1.model.Piloto;
 
 public class GranPremioDAO {
-	private Connection conexion;
 
-	public GranPremioDAO(String url, String usuario, String contrasena) throws SQLException, ClassNotFoundException {
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		this.conexion = DriverManager.getConnection(url, usuario, contrasena);
+	private PilotosDAO pilotosDAO;
+
+	public GranPremioDAO(String url, String usuario, String contrasena) {
+		// Constructor adaptado para modo mock - no se conecta a BD
+		this.pilotosDAO = new PilotosDAO(url, usuario, contrasena);
 	}
 
 	/**
-	 * Obtiene todos los grandes premios
+	 * Obtiene todos los grandes premios (DATOS MOCK)
 	 */
 	public ArrayList<GranPremio> obtenerTodosGrandesPremios() {
 		ArrayList<GranPremio> granPremios = new ArrayList<>();
-		try {
-			String sql = "SELECT * FROM gran_premio ORDER BY nombre";
-			Statement declaracion = conexion.createStatement();
-			ResultSet resultado = declaracion.executeQuery(sql);
 
-			while (resultado.next()) {
-				GranPremio gp = construirGranPremio(resultado);
-				granPremios.add(gp);
-			}
+		// Bahrain
+		ArrayList<Participacion> part1 = new ArrayList<>();
+		part1.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(1), "01:28:45", 1));
+		part1.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(81), "01:29:15", 2));
+		part1.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(33), "01:29:45", 3));
+		GranPremio bahrain = new GranPremio(1, "Bahrain Grand Prix", "Bahréin", 5.412, 57, "01:31:12", 
+			parseDate("2004-01-01"), part1, null);
+		granPremios.add(bahrain);
 
-			resultado.close();
-			declaracion.close();
-		} catch (SQLException sqle) {
-			System.err.println("Error al obtener todos los GPs: " + sqle.getMessage());
-		}
+		// Saudi Arabia
+		ArrayList<Participacion> part2 = new ArrayList<>();
+		part2.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(33), "01:51:32", 1));
+		part2.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(1), "01:52:10", 2));
+		part2.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(16), "01:52:45", 3));
+		GranPremio saudiArabia = new GranPremio(2, "Saudi Arabian Grand Prix", "Arabia Saudita", 6.174, 50, "01:55:23", 
+			parseDate("2021-01-01"), part2, null);
+		granPremios.add(saudiArabia);
+
+		// Australia
+		ArrayList<Participacion> part3 = new ArrayList<>();
+		part3.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(81), "02:27:35", 1));
+		part3.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(63), "02:27:50", 2));
+		part3.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(44), "02:28:15", 3));
+		GranPremio australia = new GranPremio(3, "Australian Grand Prix", "Australia", 5.278, 58, "02:29:45", 
+			parseDate("1985-01-01"), part3, null);
+		granPremios.add(australia);
+
+		// Japón
+		ArrayList<Participacion> part4 = new ArrayList<>();
+		part4.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(1), "02:00:12", 1));
+		part4.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(33), "02:00:45", 2));
+		part4.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(81), "02:01:20", 3));
+		GranPremio japon = new GranPremio(4, "Japanese Grand Prix", "Japón", 5.807, 53, "02:02:15", 
+			parseDate("1976-01-01"), part4, null);
+		granPremios.add(japon);
+
+		// Mónaco
+		ArrayList<Participacion> part5 = new ArrayList<>();
+		part5.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(16), "01:58:32", 1));
+		part5.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(1), "01:59:10", 2));
+		part5.add(new Participacion(pilotosDAO.obtenerPilotoPorNumero(44), "01:59:45", 3));
+		GranPremio monaco = new GranPremio(5, "Monaco Grand Prix", "Mónaco", 3.337, 78, "01:55:23", 
+			parseDate("1950-01-01"), part5, null);
+		granPremios.add(monaco);
+
 		return granPremios;
 	}
 
 	/**
-	 * Obtiene un gran premio por su ID
+	 * Obtiene un gran premio por su ID (DATOS MOCK)
 	 */
 	public GranPremio obtenerGranPremioPorId(int idGp) {
-		try {
-			String sql = "SELECT * FROM gran_premio WHERE id_gp = ?";
-			PreparedStatement ps = conexion.prepareStatement(sql);
-			ps.setInt(1, idGp);
-			ResultSet resultado = ps.executeQuery();
-
-			if (resultado.next()) {
-				GranPremio gp = construirGranPremio(resultado);
-				resultado.close();
-				ps.close();
+		ArrayList<GranPremio> todos = obtenerTodosGrandesPremios();
+		for (GranPremio gp : todos) {
+			if (gp.getIdGp() == idGp) {
 				return gp;
 			}
-
-			resultado.close();
-			ps.close();
-		} catch (SQLException sqle) {
-			System.err.println("Error al obtener GP por ID: " + sqle.getMessage());
 		}
 		return null;
 	}
 
 	/**
-	 * Obtiene un gran premio por su nombre
+	 * Obtiene un gran premio por su nombre (DATOS MOCK)
 	 */
 	public GranPremio obtenerGranPremioPorNombre(String nombre) {
-		try {
-			String sql = "SELECT * FROM gran_premio WHERE nombre = ?";
-			PreparedStatement ps = conexion.prepareStatement(sql);
-			ps.setString(1, nombre);
-			ResultSet resultado = ps.executeQuery();
-
-			if (resultado.next()) {
-				GranPremio gp = construirGranPremio(resultado);
-				resultado.close();
-				ps.close();
+		ArrayList<GranPremio> todos = obtenerTodosGrandesPremios();
+		for (GranPremio gp : todos) {
+			if (gp.getNombre().equalsIgnoreCase(nombre)) {
 				return gp;
 			}
-
-			resultado.close();
-			ps.close();
-		} catch (SQLException sqle) {
-			System.err.println("Error al obtener GP por nombre: " + sqle.getMessage());
 		}
 		return null;
 	}
 
 	/**
-	 * Obtiene GPs por ubicación
+	 * Obtiene GPs por ubicación (DATOS MOCK)
 	 */
 	public ArrayList<GranPremio> obtenerGrandesPremiosPorUbicacion(String ubicacion) {
-		ArrayList<GranPremio> granPremios = new ArrayList<>();
-		try {
-			String sql = "SELECT * FROM gran_premio WHERE ubicacion = ? ORDER BY nombre";
-			PreparedStatement ps = conexion.prepareStatement(sql);
-			ps.setString(1, ubicacion);
-			ResultSet resultado = ps.executeQuery();
-
-			while (resultado.next()) {
-				GranPremio gp = construirGranPremio(resultado);
-				granPremios.add(gp);
+		ArrayList<GranPremio> resultado = new ArrayList<>();
+		ArrayList<GranPremio> todos = obtenerTodosGrandesPremios();
+		for (GranPremio gp : todos) {
+			if (gp.getUbicacion().equalsIgnoreCase(ubicacion)) {
+				resultado.add(gp);
 			}
-
-			resultado.close();
-			ps.close();
-		} catch (SQLException sqle) {
-			System.err.println("Error al obtener GPs por ubicación: " + sqle.getMessage());
 		}
-		return granPremios;
+		return resultado;
 	}
 
 	/**
-	 * Construye un gran premio desde un ResultSet
+	 * Método auxiliar para parsear fechas
 	 */
-	private GranPremio construirGranPremio(ResultSet resultado) throws SQLException {
-		int idGp = resultado.getInt("id_gp");
-		String nombre = resultado.getString("nombre");
-		String ubicacion = resultado.getString("ubicacion");
-		double longitud = resultado.getDouble("longitud");
-		int vueltas = resultado.getInt("vueltas");
-		String vueltaRapida = resultado.getTime("vuelta_rapida") != null
-				? resultado.getTime("vuelta_rapida").toString()
-				: null;
-		Date anioCreacion = resultado.getDate("anio_creacion") != null
-				? new Date(resultado.getDate("anio_creacion").getTime())
-				: null;
-		String urlFoto = resultado.getString("imagen");
-
-		ArrayList<Participacion> participaciones = obtenerParticipacionesPorGP(idGp);
-
-		return new GranPremio(idGp, nombre, ubicacion, longitud, vueltas, vueltaRapida, anioCreacion,
-				participaciones, urlFoto);
-	}
-
-	/**
-	 * Obtiene participaciones de un GP
-	 */
-	private ArrayList<Participacion> obtenerParticipacionesPorGP(int idGp) {
-		ArrayList<Participacion> participaciones = new ArrayList<>();
+	private Date parseDate(String dateStr) {
 		try {
-			String sql = "SELECT p.*, ppgp.posicion, ppgp.tiempo FROM piloto p "
-					+ "JOIN piloto_participa_gp ppgp ON p.numero = ppgp.num_piloto "
-					+ "WHERE ppgp.id_gp = ? ORDER BY ppgp.posicion";
-			PreparedStatement ps = conexion.prepareStatement(sql);
-			ps.setInt(1, idGp);
-			ResultSet resultado = ps.executeQuery();
-
-			while (resultado.next()) {
-				Piloto piloto = new Piloto(resultado.getInt("numero"), resultado.getString("nombre"),
-						resultado.getString("apellido"), resultado.getString("nacionalidad"),
-						new Date(resultado.getDate("fecha_nacimiento").getTime()), resultado.getInt("podios"),
-						resultado.getInt("victorias"), resultado.getInt("campeonatos"), resultado.getInt("poles"),
-						resultado.getString("foto"));
-
-				String tiempo = resultado.getTime("tiempo") != null ? resultado.getTime("tiempo").toString() : null;
-				int posicion = resultado.getInt("posicion");
-
-				Participacion participacion = new Participacion(piloto, tiempo, posicion);
-				participaciones.add(participacion);
-			}
-
-			resultado.close();
-			ps.close();
-		} catch (SQLException sqle) {
-			System.err.println("Error al obtener participaciones: " + sqle.getMessage());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			return sdf.parse(dateStr);
+		} catch (Exception e) {
+			return null;
 		}
-		return participaciones;
 	}
 
 	/**
 	 * Cierra la conexión a la base de datos
 	 */
 	public void cerrarConexion() {
-		try {
-			if (conexion != null && !conexion.isClosed()) {
-				conexion.close();
-			}
-		} catch (SQLException sqle) {
-			System.err.println("Error al cerrar conexión: " + sqle.getMessage());
-		}
+		// No hay conexión que cerrar en modo mock
 	}
 }
