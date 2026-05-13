@@ -44,7 +44,7 @@ CREATE TABLE piloto (
     victorias INT UNSIGNED DEFAULT 0,
     campeonatos INT UNSIGNED DEFAULT 0,
     poles INT UNSIGNED DEFAULT 0,
-    foto BLOB
+    foto VARCHAR(255)
 );
 
 CREATE TABLE monoplaza (
@@ -54,7 +54,7 @@ CREATE TABLE monoplaza (
     caballos INT UNSIGNED NOT NULL,
     velocidad_max DECIMAL(4,1),
     peso INT UNSIGNED NOT NULL,
-    foto BLOB
+    foto VARCHAR(255)
 );
 
 CREATE TABLE escuderia (
@@ -67,8 +67,8 @@ CREATE TABLE escuderia (
     campeonatos_pilotos INT UNSIGNED DEFAULT 0,
     victorias INT UNSIGNED DEFAULT 0,
     color_hex VARCHAR(6) NOT NULL,
-    emblema BLOB,
-    foto_jefe BLOB
+    emblema VARCHAR(255),
+    foto_jefe VARCHAR(255)
 );
 
 CREATE TABLE gran_premio (
@@ -80,8 +80,8 @@ CREATE TABLE gran_premio (
     vueltas INT UNSIGNED NOT NULL,
     vuelta_rapida TIME,
     anio_creacion YEAR,
-    imagen BLOB,
-    modelo BLOB
+    imagen VARCHAR(255),
+    modelo VARCHAR(255)
 );
 
 CREATE TABLE temporada (
