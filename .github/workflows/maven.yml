@@ -39,27 +39,27 @@ deploy:
     needs: build # Solo se ejecuta si el build termina con éxito 
     runs-on: ubuntu-latest 
     steps: 
-      - name: Download artifact 
-        uses: actions/download-artifact@v4 
-        with: 
-          name: java-app-artifact 
-          path: ./target 
-      - name: Copy JAR to EC2 
-        uses: appleboy/scp-action@v0.1.7 
-        with: 
-          host: ${{ secrets.EC2_HOST }} 
-          username: ${{ secrets.EC2_USER }} 
-          key: ${{ secrets.EC2_SSH_KEY }} 
-          source: "target/*.jar" 
-          target: "/home/${{ secrets.EC2_USER }}/app" 
-          strip_components: 1 
-      - name: Executing remote ssh commands to deploy 
-        uses: appleboy/ssh-action@v1.0.3 
-        with: 
-          host: ${{ secrets.EC2_HOST }} 
-          username: ${{ secrets.EC2_USER }} 
-          key: ${{ secrets.EC2_SSH_KEY }} 
-          script: | 
-            # Matar el proceso anterior (si existe) y lanzar el nuevo 
-            sudo fuser -k 8080/tcp || true 
-            nohup java -jar /home/${{ secrets.EC2_USER }}/app/*.jar > /dev/null 2>&1 & 
+    - name: Download artifact 
+      uses: actions/download-artifact@v4 
+      with: 
+        name: java-app-artifact 
+        path: ./target 
+    - name: Copy JAR to EC2 
+      uses: appleboy/scp-action@v0.1.7 
+      with: 
+        host: ${{ secrets.EC2_HOST }} 
+        username: ${{ secrets.EC2_USER }} 
+        key: ${{ secrets.EC2_SSH_KEY }} 
+        source: "target/*.jar" 
+        target: "/home/${{ secrets.EC2_USER }}/app" 
+        strip_components: 1 
+    - name: Executing remote ssh commands to deploy 
+      uses: appleboy/ssh-action@v1.0.3 
+      with: 
+        host: ${{ secrets.EC2_HOST }} 
+        username: ${{ secrets.EC2_USER }} 
+        key: ${{ secrets.EC2_SSH_KEY }} 
+        script: | 
+          # Matar el proceso anterior (si existe) y lanzar el nuevo 
+          sudo fuser -k 8080/tcp || true 
+          nohup java -jar /home/${{ secrets.EC2_USER }}/app/*.jar > /dev/null 2>&1 & 
