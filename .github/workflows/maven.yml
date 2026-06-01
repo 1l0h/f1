@@ -61,4 +61,4 @@ jobs:
           script: |
             # Matar el proceso anterior (si existe) y lanzar el nuevo
             sudo fuser -k 8080/tcp || true
-            nohup java -jar /home/${{ secrets.EC2_USER }}/app/*.jar > /dev/null 2>&1 &
+            nohup java -jar /home/${{ secrets.EC2_USER }}/app/*.jar > /home/${{ secrets.EC2_USER }}/app/nohup.out 2>&1 &
