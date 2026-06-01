@@ -1,228 +1,330 @@
-# API REST F1 - Documentación
+# API REST F1 - Documentación Completa
 
-## Descripción
-API REST completa para consultar datos de Fórmula 1: Pilotos, Escuderías, Grandes Premios, Modelos de Coches, Temporadas y Participaciones.
-
-## Configuración
-
-### Variables de Entorno (application.properties)
-```properties
-spring.application.name=f1
-server.port=8080
-
-# Base de datos MySQL
-db.url=jdbc:mysql://localhost:3306/f1
-db.usuario=admin_f1
-db.contrasena=Admin123!
-
-# Logging
-logging.level.org.springframework.web=INFO
-logging.level.org.palomafp.f1=DEBUG
-```
-
-## Endpoints
-
-### Pilotos (`/api/pilotos`)
-
-#### Obtener todos los pilotos
-```
-GET /api/pilotos
-```
-**Respuesta:** Array de todos los pilotos en la BD
-
-#### Obtener piloto por número
-```
-GET /api/pilotos/{numero}
-```
-**Ejemplo:** `GET /api/pilotos/1`
-
-#### Obtener pilotos por nacionalidad
-```
-GET /api/pilotos/nacionalidad/{nacionalidad}
-```
-**Ejemplo:** `GET /api/pilotos/nacionalidad/España`
-
-#### Obtener pilotos por apellido
-```
-GET /api/pilotos/apellido/{apellido}
-```
-**Ejemplo:** `GET /api/pilotos/apellido/Hamilton`
+Documentación técnica de todos los endpoints disponibles en la API REST de Fórmula 1.
 
 ---
 
-### Modelos de Coches (`/api/modelos`)
+## 🌐 Base URL
 
-#### Obtener todos los modelos
 ```
-GET /api/modelos
+http://localhost:8080/f1
 ```
 
-#### Obtener modelo por ID
-```
-GET /api/modelos/{id}
-```
-**Ejemplo:** `GET /api/modelos/1`
-
-#### Obtener modelos por nombre
-```
-GET /api/modelos/nombre/{nombre}
-```
-**Ejemplo:** `GET /api/modelos/nombre/F1-2024`
-
-#### Obtener modelos por motor
-```
-GET /api/modelos/motor/{motor}
-```
-**Ejemplo:** `GET /api/modelos/motor/V6`
+En producción (EC2): Reemplaza `localhost` con la IP o DNS de tu instancia EC2.
 
 ---
 
-### Escuderías (`/api/escuderias`)
+## 📚 Endpoints por Recurso
 
-#### Obtener todas las escuderías
-```
-GET /api/escuderias
-```
-*Incluye pilotos y modelo de coche asociado*
+### 1. PILOTOS (`/f1/pilotos`)
 
-#### Obtener escudería por ID
+#### 1.1 Obtener todos los pilotos
 ```
-GET /api/escuderias/{id}
+GET /f1/pilotos
 ```
-**Ejemplo:** `GET /api/escuderias/1`
+**Descripción:** Devuelve lista completa de todos los pilotos en la BD.
 
-#### Obtener escudería por nombre
-```
-GET /api/escuderias/nombre/{nombre}
-```
-**Ejemplo:** `GET /api/escuderias/nombre/Mercedes`
-
----
-
-### Grandes Premios (`/api/granpremios`)
-
-#### Obtener todos los GPs
-```
-GET /api/granpremios
-```
-*Incluye participaciones ordenadas por posición*
-
-#### Obtener GP por ID
-```
-GET /api/granpremios/{id}
-```
-**Ejemplo:** `GET /api/granpremios/1`
-
-#### Obtener GP por nombre
-```
-GET /api/granpremios/nombre/{nombre}
-```
-**Ejemplo:** `GET /api/granpremios/nombre/Gran Premio de Mónaco`
-
-#### Obtener GPs por ubicación
-```
-GET /api/granpremios/ubicacion/{ubicacion}
-```
-**Ejemplo:** `GET /api/granpremios/ubicacion/Mónaco`
-
----
-
-### Temporadas (`/api/temporadas`)
-
-#### Obtener todas las temporadas
-```
-GET /api/temporadas
-```
-*Incluye carreras, escuderías y piloto ganador*
-
-#### Obtener temporada por año
-```
-GET /api/temporadas/{anio}
-```
-**Ejemplo:** `GET /api/temporadas/2024`
-
----
-
-### Participaciones (`/api/participaciones`)
-
-#### Obtener todas las participaciones
-```
-GET /api/participaciones
+**Ejemplo:**
+```bash
+curl -X GET http://localhost:8080/f1/pilotos
 ```
 
-#### Obtener participaciones de un piloto
-```
-GET /api/participaciones/piloto/{numero}
-```
-**Ejemplo:** `GET /api/participaciones/piloto/1`
-
-#### Obtener participaciones de un GP
-```
-GET /api/participaciones/granpremio/{id}
-```
-**Ejemplo:** `GET /api/participaciones/granpremio/1`
-
----
-
-## Respuesta de Error
-
+**Respuesta (200 OK):**
 ```json
-{
-  "status": 500,
-  "message": "Internal Server Error"
-}
+[
+  {
+    "numero": 1,
+    "nombre": "Lando",
+    "apellido": "Norris",
+    "nacionalidad": "Británica",
+    "fechaNacimiento": "1999-11-13",
+    "podios": 42,
+    "victorias": 11,
+    "campeonatos": 1,
+    "poles": 15
+  }
+]
 ```
 
-## Códigos HTTP
+---
 
-- `200 OK` - Petición exitosa
-- `201 Created` - Recurso creado
-- `404 Not Found` - Recurso no encontrado
-- `500 Internal Server Error` - Error en el servidor
+#### 1.2 Obtener piloto por número
+```
+GET /f1/pilotos/{numero}
+```
+**Parámetros:**
+- `numero` (path): Número de piloto (int)
 
-## CORS
+**Ejemplo:**
+```bash
+curl -X GET http://localhost:8080/f1/pilotos/1
+```
 
-La API tiene CORS habilitado para todas las rutas, permitiendo peticiones desde cualquier origen.
+---
 
-## Ejemplo de Uso (cURL)
+#### 1.3 Obtener pilotos por nacionalidad
+```
+GET /f1/pilotos/nacionalidad/{nacionalidad}
+```
 
+**Ejemplo:**
+```bash
+curl -X GET http://localhost:8080/f1/pilotos/nacionalidad/Británica
+```
+
+---
+
+#### 1.4 Obtener pilotos por apellido
+```
+GET /f1/pilotos/apellido/{apellido}
+```
+
+**Ejemplo:**
+```bash
+curl -X GET http://localhost:8080/f1/pilotos/apellido/Hamilton
+```
+
+---
+
+### 2. ESCUDERÍAS (`/f1/escuderias`)
+
+#### 2.1 Obtener todas las escuderías
+```
+GET /f1/escuderias
+```
+
+**Ejemplo:**
+```bash
+curl -X GET http://localhost:8080/f1/escuderias
+```
+
+---
+
+#### 2.2 Obtener escudería por ID
+```
+GET /f1/escuderias/{id}
+```
+
+**Ejemplo:**
+```bash
+curl -X GET http://localhost:8080/f1/escuderias/1
+```
+
+---
+
+#### 2.3 Obtener escudería por nombre
+```
+GET /f1/escuderias/nombre/{nombre}
+```
+
+**Ejemplo:**
+```bash
+curl -X GET http://localhost:8080/f1/escuderias/nombre/McLaren
+```
+
+---
+
+### 3. GRANDES PREMIOS (`/f1/granpremios`)
+
+#### 3.1 Obtener todos los GPs
+```
+GET /f1/granpremios
+```
+
+**Ejemplo:**
+```bash
+curl -X GET http://localhost:8080/f1/granpremios
+```
+
+---
+
+#### 3.2 Obtener GP por ID
+```
+GET /f1/granpremios/{id}
+```
+
+**Ejemplo:**
+```bash
+curl -X GET http://localhost:8080/f1/granpremios/1
+```
+
+---
+
+#### 3.3 Obtener GP por nombre
+```
+GET /f1/granpremios/nombre/{nombre}
+```
+
+**Ejemplo:**
+```bash
+curl -X GET "http://localhost:8080/f1/granpremios/nombre/Bahrain%20Grand%20Prix"
+```
+
+---
+
+#### 3.4 Obtener GPs por ubicación
+```
+GET /f1/granpremios/ubicacion/{ubicacion}
+```
+
+**Ejemplo:**
+```bash
+curl -X GET http://localhost:8080/f1/granpremios/ubicacion/Bahréin
+```
+
+---
+
+### 4. MODELOS DE COCHES (`/f1/modelos`)
+
+#### 4.1 Obtener todos los modelos
+```
+GET /f1/modelos
+```
+
+---
+
+#### 4.2 Obtener modelo por ID
+```
+GET /f1/modelos/{id}
+```
+
+**Ejemplo:**
+```bash
+curl -X GET http://localhost:8080/f1/modelos/1
+```
+
+---
+
+#### 4.3 Obtener modelos por nombre
+```
+GET /f1/modelos/nombre/{nombre}
+```
+
+**Ejemplo:**
+```bash
+curl -X GET http://localhost:8080/f1/modelos/nombre/McLaren
+```
+
+---
+
+#### 4.4 Obtener modelos por motor
+```
+GET /f1/modelos/motor/{motor}
+```
+
+**Ejemplo:**
+```bash
+curl -X GET http://localhost:8080/f1/modelos/motor/Mercedes
+```
+
+---
+
+### 5. PARTICIPACIONES (`/f1/participaciones`)
+
+#### 5.1 Obtener todas las participaciones
+```
+GET /f1/participaciones
+```
+
+---
+
+#### 5.2 Obtener participaciones de un piloto
+```
+GET /f1/participaciones/piloto/{numero}
+```
+
+**Ejemplo:**
+```bash
+curl -X GET http://localhost:8080/f1/participaciones/piloto/1
+```
+
+---
+
+#### 5.3 Obtener participaciones en un GP
+```
+GET /f1/participaciones/granpremio/{id}
+```
+
+**Ejemplo:**
+```bash
+curl -X GET http://localhost:8080/f1/participaciones/granpremio/1
+```
+
+---
+
+### 6. TEMPORADAS (`/f1/temporadas`)
+
+#### 6.1 Obtener todas las temporadas
+```
+GET /f1/temporadas
+```
+
+---
+
+#### 6.2 Obtener temporada por año
+```
+GET /f1/temporadas/{anio}
+```
+
+**Ejemplo:**
+```bash
+curl -X GET http://localhost:8080/f1/temporadas/2026
+```
+
+---
+
+## 🎯 Códigos de Respuesta HTTP
+
+| Código | Significado |
+|--------|------------|
+| 200 | OK - Solicitud exitosa |
+| 404 | Not Found - Recurso no encontrado |
+| 500 | Internal Server Error - Error del servidor |
+
+---
+
+## 🔄 CORS
+
+Todas las respuestas incluyen CORS habilitado:
+```
+Access-Control-Allow-Origin: *
+Content-Type: application/json
+```
+
+---
+
+## 🧪 Ejemplos Completos
+
+### JavaScript (Fetch API)
+```javascript
+// Obtener todos los pilotos
+fetch('http://localhost:8080/f1/pilotos')
+  .then(response => response.json())
+  .then(data => console.log(data));
+
+// Obtener piloto específico
+fetch('http://localhost:8080/f1/pilotos/1')
+  .then(response => response.json())
+  .then(data => console.log(data));
+```
+
+### Python (Requests)
+```python
+import requests
+
+response = requests.get('http://localhost:8080/f1/pilotos')
+print(response.json())
+```
+
+### cURL
 ```bash
 # Obtener todos los pilotos
-curl -X GET http://localhost:8080/api/pilotos
+curl http://localhost:8080/f1/pilotos
 
-# Obtener piloto específico
-curl -X GET http://localhost:8080/api/pilotos/1
-
-# Obtener escuderías
-curl -X GET http://localhost:8080/api/escuderias
-
-# Obtener GPs por ubicación
-curl -X GET http://localhost:8080/api/granpremios/ubicacion/España
+# Con formato pretty JSON
+curl http://localhost:8080/f1/pilotos | jq
 ```
 
-## Construcción y Despliegue
+---
 
-### Compilar
-```bash
-mvn clean package
-```
-
-### Ejecutar
-```bash
-java -jar target/f1-0.0.1-SNAPSHOT.jar
-```
-
-### Con propiedades externas
-```bash
-java -jar target/f1-0.0.1-SNAPSHOT.jar \
-  --db.url=jdbc:mysql://tu-host:3306/f1 \
-  --db.usuario=tu_usuario \
-  --db.contrasena=tu_contrasena \
-  --server.port=8080
-```
-
-## Dependencias
-
-- Spring Boot 4.0.6
-- MySQL Connector 8.0.33
-- Java 21
+**Para más información sobre configuración y despliegue, consulta [README.md](README.md) y [DATABASE_CONFIGURATION.md](DATABASE_CONFIGURATION.md).**

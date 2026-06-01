@@ -1,5 +1,9 @@
 package org.palomafp.f1.dao;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,17 +11,69 @@ import java.util.Date;
 import org.palomafp.f1.model.Piloto;
 
 public class PilotosDAO {
+	
+	private String url;
+	private String usuario;
+	private String contrasena;
+	private Connection conexion;
 
 	public PilotosDAO(String url, String usuario, String contrasena) {
-		// Constructor adaptado para modo mock - no se conecta a BD
+		this.url = url;
+		this.usuario = usuario;
+		this.contrasena = contrasena;
+		this.conexion = null;
+	}
+	
+	private Connection obtenerConexion() throws Exception {
+		if (url == null || usuario == null || contrasena == null) {
+			// Modo mock si no hay credenciales
+			return null;
+		}
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		return DriverManager.getConnection(url, usuario, contrasena);
 	}
 
 	/**
-	 * Obtiene todos los pilotos (DATOS MOCK)
+	 * Obtiene todos los pilotos (desde BD o MOCK)
 	 */
 	public ArrayList<Piloto> obtenerTodosPilotos() {
 		ArrayList<Piloto> pilotos = new ArrayList<>();
 		
+		try {
+			Connection con = obtenerConexion();
+			if (con != null) {
+				String sql = "SELECT numero, nombre, apellido, nacionalidad, fecha_nacimiento, podios, victorias, campeonatos, poles FROM piloto";
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+				
+				while (rs.next()) {
+					int numero = rs.getInt("numero");
+					String nombre = rs.getString("nombre");
+					String apellido = rs.getString("apellido");
+					String nacionalidad = rs.getString("nacionalidad");
+					Date fecha = new Date(rs.getDate("fecha_nacimiento").getTime());
+					int podios = rs.getInt("podios");
+					int victorias = rs.getInt("victorias");
+					int campeonatos = rs.getInt("campeonatos");
+					int poles = rs.getInt("poles");
+					
+					Piloto piloto = new Piloto(numero, nombre, apellido, nacionalidad, fecha, podios, victorias, campeonatos, poles, null);
+					pilotos.add(piloto);
+				}
+				
+				rs.close();
+				stmt.close();
+				con.close();
+				
+				if (!pilotos.isEmpty()) {
+					return pilotos;
+				}
+			}
+		} catch (Exception e) {
+			System.err.println("Error al conectar con BD, usando datos mock: " + e.getMessage());
+		}
+		
+		// Fallback a datos mock
 		pilotos.add(crearPiloto(1, "Lando", "Norris", "Británica", "1999-11-13", 42, 11, 1, 15));
 		pilotos.add(crearPiloto(81, "Oscar", "Piastri", "Australiana", "2001-04-06", 28, 8, 0, 6));
 		pilotos.add(crearPiloto(63, "George", "Russell", "Británica", "1998-02-15", 18, 4, 0, 5));
@@ -33,9 +89,42 @@ public class PilotosDAO {
 	}
 
 	/**
-	 * Obtiene un piloto por su número (DATOS MOCK)
+	 * Obtiene un piloto por su número (desde BD o MOCK)
 	 */
 	public Piloto obtenerPilotoPorNumero(int numero) {
+		try {
+			Connection con = obtenerConexion();
+			if (con != null) {
+				String sql = "SELECT numero, nombre, apellido, nacionalidad, fecha_nacimiento, podios, victorias, campeonatos, poles FROM piloto WHERE numero = " + numero;
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+				
+				if (rs.next()) {
+					String nombre = rs.getString("nombre");
+					String apellido = rs.getString("apellido");
+					String nacionalidad = rs.getString("nacionalidad");
+				Date fecha = new Date(rs.getDate("fecha_nacimiento").getTime());
+					int podios = rs.getInt("podios");
+					int victorias = rs.getInt("victorias");
+					int campeonatos = rs.getInt("campeonatos");
+					int poles = rs.getInt("poles");
+					
+					Piloto piloto = new Piloto(numero, nombre, apellido, nacionalidad, fecha, podios, victorias, campeonatos, poles, null);
+					rs.close();
+					stmt.close();
+					con.close();
+					return piloto;
+				}
+				
+				rs.close();
+				stmt.close();
+				con.close();
+			}
+		} catch (Exception e) {
+			System.err.println("Error al query piloto por número: " + e.getMessage());
+		}
+		
+		// Fallback a mock
 		ArrayList<Piloto> todos = obtenerTodosPilotos();
 		for (Piloto p : todos) {
 			if (p.getNumero() == numero) {
@@ -46,10 +135,45 @@ public class PilotosDAO {
 	}
 
 	/**
-	 * Obtiene pilotos por nacionalidad (DATOS MOCK)
+	 * Obtiene pilotos por nacionalidad (desde BD o MOCK)
 	 */
 	public ArrayList<Piloto> obtenerPilotosPorNacionalidad(String nacionalidad) {
 		ArrayList<Piloto> resultado = new ArrayList<>();
+		
+		try {
+			Connection con = obtenerConexion();
+			if (con != null) {
+				String sql = "SELECT numero, nombre, apellido, nacionalidad, fecha_nacimiento, podios, victorias, campeonatos, poles FROM piloto WHERE nacionalidad = '" + nacionalidad + "'";
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+				
+				while (rs.next()) {
+					int numero = rs.getInt("numero");
+					String nombre = rs.getString("nombre");
+					String apellido = rs.getString("apellido");
+					Date fecha = new Date(rs.getDate("fecha_nacimiento").getTime());
+					int podios = rs.getInt("podios");
+					int victorias = rs.getInt("victorias");
+					int campeonatos = rs.getInt("campeonatos");
+					int poles = rs.getInt("poles");
+					
+					Piloto piloto = new Piloto(numero, nombre, apellido, nacionalidad, fecha, podios, victorias, campeonatos, poles, null);
+					resultado.add(piloto);
+				}
+				
+				rs.close();
+				stmt.close();
+				con.close();
+				
+				if (!resultado.isEmpty()) {
+					return resultado;
+				}
+			}
+		} catch (Exception e) {
+			System.err.println("Error al query pilotos por nacionalidad: " + e.getMessage());
+		}
+		
+		// Fallback a mock
 		ArrayList<Piloto> todos = obtenerTodosPilotos();
 		for (Piloto p : todos) {
 			if (p.getNacionalidad().equalsIgnoreCase(nacionalidad)) {
@@ -60,10 +184,46 @@ public class PilotosDAO {
 	}
 
 	/**
-	 * Obtiene pilotos por apellido (DATOS MOCK)
+	 * Obtiene pilotos por apellido (desde BD o MOCK)
 	 */
 	public ArrayList<Piloto> obtenerPilotosPorApellido(String apellido) {
 		ArrayList<Piloto> resultado = new ArrayList<>();
+		
+		try {
+			Connection con = obtenerConexion();
+			if (con != null) {
+				String sql = "SELECT numero, nombre, apellido, nacionalidad, fecha_nacimiento, podios, victorias, campeonatos, poles FROM piloto WHERE apellido LIKE '%" + apellido + "%'";
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+				
+				while (rs.next()) {
+					int numero = rs.getInt("numero");
+					String nombre = rs.getString("nombre");
+					String apYObtenido = rs.getString("apellido");
+					String nacionalidad = rs.getString("nacionalidad");
+					Date fecha = new Date(rs.getDate("fecha_nacimiento").getTime());
+					int podios = rs.getInt("podios");
+					int victorias = rs.getInt("victorias");
+					int campeonatos = rs.getInt("campeonatos");
+					int poles = rs.getInt("poles");
+					
+					Piloto piloto = new Piloto(numero, nombre, apYObtenido, nacionalidad, fecha, podios, victorias, campeonatos, poles, null);
+					resultado.add(piloto);
+				}
+				
+				rs.close();
+				stmt.close();
+				con.close();
+				
+				if (!resultado.isEmpty()) {
+					return resultado;
+				}
+			}
+		} catch (Exception e) {
+			System.err.println("Error al query pilotos por apellido: " + e.getMessage());
+		}
+		
+		// Fallback a mock
 		ArrayList<Piloto> todos = obtenerTodosPilotos();
 		for (Piloto p : todos) {
 			if (p.getApellido().toLowerCase().contains(apellido.toLowerCase())) {
