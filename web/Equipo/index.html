@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipo</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <header>
+        <div>
+            <a href="../index.html"><img src="../../.placeholders/logo.png" alt="Logo" height="50"></a>
+        </div>
+        <h1>TEMPORADA</h1>
+        <div id="SeleccionarAnio">
+            <Button><span>&lt;</span></Button>
+            <h2>2026</h2>
+            <button><span>&gt;</span></button>
+        </div>
+    </header>
+    <main>
+        <div id="monoplaza_box">
+            <img id="escuderia" src="../../.placeholders/astonmartin.png" alt="astonmartin">
+            <div id="info">
+                <h2>Aston Martin</h2>
+                <span>(2021)</span>
+                <p>Reino Unido</p>
+            </div>
+            <img id="monoplaza" src="../../.placeholders/monoplaza.png" alt="monoplaza">
+        </div>
+        <div id="specs">
+            <h2>AMR26</h2>
+            <div>
+                <p><b>Motor: </b>RA626H</p>
+                <p><b>Peso: </b>~770 Kg</p>
+            </div>
+            <div>
+                <p><b>Potencia: </b>~950 bhp</p>
+                <p><b>Velocidad Máxima: </b>330 Km/h</p>
+            </div>
+        </div>
+        <div id="plantilla">
+            <h2>PILOTOS</h2>
+            <div class="pilotos-grid" id="pilotosGrid">
+                <!-- pilotos cargados desde la API -->
+            </div>
+        </div>
+    </main>
+    <script src="../api.js"></script>
+    <script>
+        (async function(){
+            const name = qParam('e', 'Aston Martin');
+            try {
+                const escuderia = await fetchEscuderiaByNombre(name);
+                document.querySelector('#monoplaza_box #escuderia').alt = escuderia.nombre || '';
+                const info = document.querySelector('#monoplaza_box #info');
+                if (info) {
+                    info.querySelector('h2').textContent = escuderia.nombre || '';
+                    const anio = escuderia.anioEntrada ? (new Date(escuderia.anioEntrada)).getFullYear() : '';
+                    info.querySelector('span').textContent = anio ? `(${anio})` : '';
+                    info.querySelector('p').textContent = escuderia.pais || '';
+                }
+
+                const specs = document.getElementById('specs');
+                if (specs && escuderia.coche) {
+                    specs.querySelector('h2').textContent = escuderia.coche.nombre || '';
+                    const divs = specs.querySelectorAll('div');
+                    if (divs[0]) {
+                        divs[0].innerHTML = `<p><b>Motor: </b>${escuderia.coche.motor || ''}</p><p><b>Peso: </b>${escuderia.coche.peso ?? '~'} Kg</p>`;
+                    }
+                    if (divs[1]) {
+                        divs[1].innerHTML = `<p><b>Potencia: </b>${escuderia.coche.caballos ?? '~'} bhp</p><p><b>Velocidad Máxima: </b>${escuderia.coche.velMax ?? '~'} Km/h</p>`;
+                    }
+                }
+
+                // Render pilotos
+                const grid = document.getElementById('pilotosGrid');
+                grid.innerHTML = '';
+                if (escuderia.pilotos && escuderia.pilotos.length) {
+                    escuderia.pilotos.forEach((p, idx) => {
+                        const a = document.createElement('a');
+                        a.className = 'pilot-card pilot-card-link';
+                        a.href = `../Piloto/index.html?n=${encodeURIComponent(p.numero)}`;
+                        a.innerHTML = `
+                            <img src="../../.placeholders/fernandoAlonso.png" alt="${p.nombre}">
+                            <p class="pilot-number">${p.numero}</p>
+                            <p class="pilot-name">${p.nombre} ${p.apellido}</p>
+                            <p class="pilot-role">Piloto</p>
+                        `;
+                        grid.appendChild(a);
+
+                        // after first pilot, insert boss-card if present
+                        if (idx === 0 && escuderia.jefeEquipo) {
+                            const boss = document.createElement('div');
+                            boss.className = 'boss-card';
+                            boss.id = 'jefe';
+                            boss.innerHTML = `<img src="../../.placeholders/adrianNewey.png" alt="jefe"><p class="pilot-name">${escuderia.jefeEquipo}</p><p class="pilot-role">Jefe de Equipo</p>`;
+                            grid.appendChild(boss);
+                        }
+                    });
+                } else {
+                    grid.innerHTML = '<p>No hay pilotos disponibles</p>';
+                    if (escuderia.jefeEquipo) {
+                        const boss = document.createElement('div');
+                        boss.className = 'boss-card';
+                        boss.id = 'jefe';
+                        boss.innerHTML = `<img src="../../.placeholders/adrianNewey.png" alt="jefe"><p class="pilot-name">${escuderia.jefeEquipo}</p><p class="pilot-role">Jefe de Equipo</p>`;
+                        grid.appendChild(boss);
+                    }
+                }
+            } catch (e) {
+                console.error('Error cargando escudería', e);
+                const info = document.querySelector('#monoplaza_box #info');
+                if (info) info.innerHTML = '<p style="color:#c33">No se pudo cargar la escudería (ver consola).</p>';
+                const grid = document.getElementById('pilotosGrid');
+                if (grid) grid.innerHTML = '<p>No hay pilotos disponibles</p>';
+            }
+        })();
+    </script>
+</body>
+</html>

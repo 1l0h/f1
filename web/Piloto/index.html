@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipo</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <header>
+        <div>
+            <a href="../index.html"><img src="../../.placeholders/logo.png" alt="Logo" height="50"></a>
+        </div>
+        <h1>TEMPORADA</h1>
+        <div id="SeleccionarAnio">
+            <Button><span>&lt;</span></Button>
+            <h2>2026</h2>
+            <button><span>&gt;</span></button>
+        </div>
+    </header>
+    <main>
+        <div id="tarjetaPiloto">
+            <img id="aston" src="../../.placeholders/astonmartin.png" alt="">
+            <img id="piloto" src="../../.placeholders/fernandoAlonso.png" alt="">
+            <div id="info">
+                <p id="num">14</p>
+                <p id="nombre">Fernando</p>
+                <p id="apellido">Alonso</p>
+                <span id="pais">España</span>
+                <span id="nac">(29-06-1981)</span>
+            </div>
+            <img id="logo" src="../../.placeholders/logo.png" alt="Logo" height="50">
+        </div>
+
+        <div id="stats">
+            <div class="stat-card">
+                <img src="../../.placeholders/victorias.png" alt="victorias">
+                <p>Victorias</p>
+                <p class="valores">32</p>
+            </div>
+            <div class="stat-card">
+                <img src="../../.placeholders/podios.png" alt="podios">
+                <p>Podios</p>
+                <p class="valores">106</p>
+            </div>
+            <div class="stat-card">
+                <img src="../../.placeholders/campeonatos.png" alt="campeonatos">
+                <p>Campeonatos</p>
+                <p class="valores">2</p>
+            </div>
+            <div class="stat-card">
+                <img src="../../.placeholders/poles.png" alt="poles">
+                <p>Poles</p>
+                <p class="valores">22</p>
+            </div>
+        </div>
+        </main>
+    <script src="../api.js"></script>
+    <script>
+        (async function(){
+            const numero = parseInt(qParam('n', '14')) || 14;
+            try {
+                const piloto = await fetchPilotoByNumero(numero);
+                document.getElementById('num').textContent = piloto.numero || '';
+                document.getElementById('nombre').textContent = piloto.nombre || '';
+                document.getElementById('apellido').textContent = piloto.apellido || '';
+                document.getElementById('pais').textContent = piloto.nacionalidad || '';
+                if (piloto.fechaNacimiento) {
+                    const d = new Date(piloto.fechaNacimiento);
+                    document.getElementById('nac').textContent = `(${d.getDate().toString().padStart(2,'0')}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getFullYear()})`;
+                }
+                const stats = document.querySelectorAll('#stats .stat-card .valores');
+                if (stats && stats.length >= 4) {
+                    stats[0].textContent = piloto.victorias ?? '0';
+                    stats[1].textContent = piloto.podios ?? '0';
+                    stats[2].textContent = piloto.campeonatos ?? '0';
+                    stats[3].textContent = piloto.poles ?? '0';
+                }
+            } catch (e) {
+                console.error('Error cargando piloto', e);
+                const info = document.getElementById('info');
+                if (info) info.innerHTML = '<p style="color:#c33">No se pudo cargar la información del piloto (ver consola).</p>';
+                const stats = document.getElementById('stats');
+                if (stats) stats.style.display = 'none';
+            }
+
+            // small visual effect: scale on scroll
+            const pilotCard = document.getElementById('tarjetaPiloto');
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', () => {
+                const cardTopOffset = pilotCard.offsetTop;
+                const headerHeight = header.offsetHeight;
+                const triggerPoint = cardTopOffset - headerHeight;
+                const scrolled = Math.max(0, window.scrollY - triggerPoint);
+                const scale = Math.max(0, 1 - scrolled / 200);
+                pilotCard.style.transform = `scaleY(${scale})`;
+                pilotCard.style.transformOrigin = 'top';
+                pilotCard.style.opacity = scale;
+            });
+        })();
+    </script>
+</body>
+</html>

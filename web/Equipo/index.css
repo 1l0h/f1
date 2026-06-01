@@ -1,0 +1,207 @@
+@font-face {
+    font-family: "Formula1";
+    src: url(../../../Formula1-Display-Bold-Bold/Formula1-Regular_web_0.ttf);
+}
+@font-face {
+    font-family: "Formula1-Bold";
+    src: url(../../../Formula1-Display-Bold-Bold/Formula1-Bold_web_0.ttf);
+}
+
+body {
+    background-color: #252434;
+    font-family: "Formula1";
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+html::-webkit-scrollbar {
+    display: none;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    background-color: #000000;
+    height: 7rem;
+    padding: 0 1rem;
+}
+
+h1 {
+    font-family: "Formula1-Bold";
+    color: #EF0000;
+    font-size: 3rem;
+    width: auto;
+    font-style: italic;
+}
+
+#SeleccionarAnio {
+    height: 100%;
+    display: inline-block;
+    color: #EF0000;
+
+}
+#SeleccionarAnio h2 {
+    font-size: 3rem;
+}
+#SeleccionarAnio h2, #SeleccionarAnio button span {
+    display: inline-block;
+    font-family: "Formula1-Bold";
+    margin-top: 1.5rem;
+}
+
+#SeleccionarAnio button {
+    height: 3rem;
+    width: 2rem;
+    background-color: transparent;
+    border: none;
+    align-content: center;
+}
+#SeleccionarAnio button span{
+    transition: 0.2s;
+    color: #EF0000;
+    font-size: 2.5rem;
+    margin: auto 0.5rem auto 0.5rem;
+}
+#SeleccionarAnio button span:hover {
+    transition: 0.2s;
+    height: 4rem;
+    font-size: 3rem;
+    color: #ffffff;
+}
+#SeleccionarAnio button span:active {
+    transition: 0.2s;
+    height: 4rem;
+    font-size: 3rem;
+    color: #EF0000;
+}
+#monoplaza_box {
+    background-image: linear-gradient(to bottom, #00352F, #00000000);
+    text-align: center;
+}
+#monoplaza_box span, #monoplaza_box h2 {
+    display: inline-block;
+    margin-bottom: -3rem;
+    font-size: 2.5rem;
+}
+#monoplaza_box h2 {
+    font-family: "Formula1-Bold";
+}
+#monoplaza_box p {
+    width: 100%;
+    text-align: left;
+    font-size: 2rem;
+}
+#monoplaza {
+    width: 90%;
+}
+#escuderia {
+    float: left;
+    height: 10rem;
+    margin: 5rem -3rem 0 5rem;
+}
+#info {
+    float: left;
+    margin: 5rem;
+}
+#specs {
+    background-color: #00000088;
+    margin: 1rem;
+    padding: 0.5rem 2rem;
+    border-radius: 1rem;
+}
+#specs h2 {
+    font-family: "Formula1-Bold";
+    font-style: italic;
+    font-size: 2rem;
+
+}
+#specs p {
+    display: inline-block;
+    margin: 2rem 5rem;
+    width: 30rem;
+    font-size: 1.3rem;
+}
+#plantilla h2 {
+    text-align: center;
+    font-family: "Formula1-Bold";
+    font-style: italic;
+    font-size: 4rem;
+    margin-bottom: 2rem;
+}
+#plantilla img {
+    display: block;
+}
+
+
+
+
+#plantilla {
+    background-image: url("../../.placeholders/astonmartin.png");
+    background-size: 75%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: rgba(37, 36, 52, 0.75);
+    background-blend-mode: darken;
+    padding: 2rem 1.5rem 3rem;
+    border-radius: 2rem;
+    margin: 1rem;
+}
+.pilotos-grid {
+    display: flex;
+    justify-content: center;
+    gap: 20rem;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+.pilot-card,
+.boss-card {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    text-align: center;
+    box-shadow: none;
+}
+.pilot-card-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+.pilot-card img,
+.boss-card img {
+    width: 100%;
+    max-width: 14rem;
+    object-fit: contain;
+    margin: 0 auto 1rem;
+    display: block;
+}
+.pilot-card p,
+.boss-card p {
+    margin: 0.35rem 0;
+    color: #f1f1f1;
+}
+.pilot-card .pilot-number,
+.boss-card .pilot-number {
+    font-family: "Formula1-Bold";
+    color: #00352F;
+    font-style: italic;
+    text-shadow: 1px 1px #ffffff66;
+    text-decoration: solid;
+    font-size: 4rem;
+    margin-bottom: 0.35rem;
+}
+.pilot-card .pilot-role,
+.boss-card .pilot-role {
+    color: #d7d7d7;
+    font-size: 1.2rem;
+}
+.pilot-name {
+    font-family: "Formula1-Bold";
+    font-size: 1.8rem;
+}
+.boss-card {
+    background: transparent;
+}

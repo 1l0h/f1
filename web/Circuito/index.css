@@ -148,8 +148,14 @@ h1 {
     color: #EF0000;
 
 }
+h2 {
+    font-family: "Formula1-Bold";
+    font-style: italic;
+    font-size: 2rem;
+}
 #SeleccionarAnio h2 {
     font-size: 3rem;
+    font-style: normal;
 }
 #SeleccionarAnio h2, #SeleccionarAnio button span {
     display: inline-block;
@@ -183,11 +189,6 @@ h1 {
     color: #EF0000;
 }
 
-h2 {
-    font-family: "Formula1-Bold";
-    font-style: italic;
-    font-size: 2rem;
-}
 hr {
     margin-bottom: 2rem;
     margin-top: -0.5rem;
@@ -198,6 +199,7 @@ hr {
     background-color: #000000;
     align-content: center;
     border-radius: 0.5rem;
+    cursor: pointer;
 }
 .piloto * {
     float: left;

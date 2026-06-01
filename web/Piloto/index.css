@@ -1,0 +1,212 @@
+@font-face {
+    font-family: "Formula1";
+    src: url(../../../Formula1-Display-Bold-Bold/Formula1-Regular_web_0.ttf);
+}
+@font-face {
+    font-family: "Formula1-Bold";
+    src: url(../../../Formula1-Display-Bold-Bold/Formula1-Bold_web_0.ttf);
+}
+
+html, body {
+    background-color: #252434;
+    font-family: "Formula1";
+    margin: 0;
+    padding: 0;
+    color: #ffffff;
+}
+html::-webkit-scrollbar {
+    display: none;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    background-color: #000000;
+    height: 7rem;
+    padding: 0 1rem;
+}
+
+h1 {
+    font-family: "Formula1-Bold";
+    color: #EF0000;
+    font-size: 3rem;
+    width: auto;
+    font-style: italic;
+}
+
+#SeleccionarAnio {
+    height: 100%;
+    display: inline-block;
+    color: #EF0000;
+
+}
+#SeleccionarAnio h2 {
+    font-size: 3rem;
+}
+#SeleccionarAnio h2, #SeleccionarAnio button span {
+    display: inline-block;
+    font-family: "Formula1-Bold";
+    margin-top: 1.5rem;
+}
+
+#SeleccionarAnio button {
+    height: 3rem;
+    width: 2rem;
+    background-color: transparent;
+    border: none;
+    align-content: center;
+}
+#SeleccionarAnio button span{
+    transition: 0.2s;
+    color: #EF0000;
+    font-size: 2.5rem;
+    margin: auto 0.5rem auto 0.5rem;
+}
+#SeleccionarAnio button span:hover {
+    transition: 0.2s;
+    height: 4rem;
+    font-size: 3rem;
+    color: #ffffff;
+}
+#SeleccionarAnio button span:active {
+    transition: 0.2s;
+    height: 4rem;
+    font-size: 3rem;
+    color: #EF0000;
+}
+
+#tarjetaPiloto {
+    background-image: linear-gradient(to right, #00352F, #ffffff66);
+    width: 90%;
+    margin: 4rem auto;
+    border-radius: 1rem;
+    padding: 0 3rem;
+    box-sizing: border-box;
+    height: 46.5rem;
+    overflow: hidden;
+    transition: max-height 0.2s ease, opacity 0.2s ease;
+}
+#aston {
+    display: block;
+}
+#piloto {
+    display: inline-block;
+    width: 100%;
+    max-width: 28rem;
+    height: 33rem;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 1rem;
+    transition: height 0.2s ease;
+}
+#info {
+    display: inline-block;
+    position: relative;
+    top: -5rem;
+    transition: transform 0.2s ease;
+}
+#logo {
+    float: right;
+    height: 10rem;
+    filter: brightness(0);
+    opacity: 0.15;
+    margin: 5rem;
+}
+#num {
+    font-family: "Formula1-Bold";
+    font-size: 6rem;
+    font-style: italic;
+    opacity: 50%;
+    margin-top: 0;
+}
+#nombre, #apellido {
+    font-size: 3rem;
+    margin: 0.1rem;
+}
+#apellido, #pais {
+    font-family: "Formula1-Bold";
+    margin-bottom: 3rem;
+}
+
+#pais, #nac {
+    display: inline-block;
+    margin-top: 3rem;
+}
+
+#stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 1.5rem;
+    width: 90%;
+    margin: 2rem auto;
+    flex-wrap: wrap;
+}
+#stats .stat-card {
+    flex: 1 1 16rem;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 1;
+}
+#stats .stat-card:hover {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    transform: translateY(-8px);
+}
+#stats.centered {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -65%);
+    width: 90%;
+    max-width: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 1.5rem;
+    z-index: 5;
+}
+#stats.centered .stat-card {
+    flex: 1 1 15rem;
+    animation: slideUp 0.5s ease forwards;
+}
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+#stats .stat-card img {
+    max-width: 75%;
+    height: 35rem;
+    object-fit: scale-down;
+    object-position: bottom;
+    margin-bottom: 1rem;
+}
+#stats .stat-card p {
+    margin: 0.5rem 0;
+    font-size: 2rem;
+}
+#stats .stat-card .valores {
+    margin: 0.5rem 0;
+    font-size: 2.5rem;
+    font-family: "Formula1";
+    font-family: "Formula1-Bold";
+    opacity: 50%;
+}

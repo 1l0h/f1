@@ -1,13 +1,6 @@
 USE f1;
 
 -- =========================
--- TEMPORADA 2026
--- =========================
-
-INSERT INTO temporada (anio, num_piloto_ganador)
-VALUES (2026, 1);
-
--- =========================
 -- PILOTOS
 -- =========================
 
@@ -34,6 +27,13 @@ INSERT INTO piloto VALUES
 (5, 'Gabriel', 'Bortoleto', 'Brasileña', '2004-10-14', 0, 0, 0, 0, NULL),
 (11, 'Sergio', 'Perez', 'Mexicana', '1990-01-26', 39, 6, 0, 3, NULL),
 (77, 'Valtteri', 'Bottas', 'Finlandesa', '1989-08-28', 67, 10, 0, 20, NULL);
+
+-- =========================
+-- TEMPORADA 2026
+-- =========================
+
+INSERT INTO temporada (anio, num_piloto_ganador)
+VALUES (2026, 1);
 
 -- =========================
 -- ESCUDERIAS
@@ -166,6 +166,7 @@ VALUES
 -- RESULTADOS DE ALGUNOS GP
 -- =========================
 
+INSERT INTO piloto_participa_gp VALUES
 -- 1. Australia
 (1, 1, 1, '01:31:22'),
 (81, 1, 2, '01:31:27'),

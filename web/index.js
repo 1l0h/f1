@@ -30,6 +30,16 @@ document.addEventListener('DOMContentLoaded', ()=>{
   window.addEventListener('load', ()=>{ updateColGap(); });
   updateColGap();
 
+  document.querySelectorAll('#Carrusel .tarjeta').forEach(logo => {
+    logo.addEventListener('click', ()=>{
+      // intentar usar el alt del <img> dentro de la tarjeta como parámetro de escudería
+      const img = logo.querySelector('img');
+      const team = img ? img.alt || img.getAttribute('data-name') || '' : '';
+      const url = team ? `Equipo/index.html?e=${encodeURIComponent(team)}` : 'Equipo/index.html';
+      window.location.href = url;
+    });
+  });
+
   function openCard(card){
     // quitar active de otras
     document.querySelectorAll('.circuito.active').forEach(c=>c.classList.remove('active'));
