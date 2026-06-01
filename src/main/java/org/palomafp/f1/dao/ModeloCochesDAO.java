@@ -37,17 +37,17 @@ public class ModeloCochesDAO {
 		try {
 			Connection con = obtenerConexion();
 			if (con != null) {
-				String sql = "SELECT idModelo, nombre, motor, potencia, peso, velocidadMaxima FROM modelosCoches";
+				String sql = "SELECT id_modelo, nombre, motor, caballos, peso, velocidad_max FROM monoplaza";
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);
 				
 				while (rs.next()) {
-					int idModelo = rs.getInt("idModelo");
+					int idModelo = rs.getInt("id_modelo");
 					String nombre = rs.getString("nombre");
 					String motor = rs.getString("motor");
-					int potencia = rs.getInt("potencia");
+					int potencia = rs.getInt("caballos");
 					int peso = rs.getInt("peso");
-					int velocidad = rs.getInt("velocidadMaxima");
+					int velocidad = rs.getInt("velocidad_max");
 					
 					coches.add(new ModeloCoche(idModelo, nombre, motor, potencia, peso, velocidad, null));
 				}
@@ -81,16 +81,16 @@ public class ModeloCochesDAO {
 		try {
 			Connection con = obtenerConexion();
 			if (con != null) {
-				String sql = "SELECT idModelo, nombre, motor, potencia, peso, velocidadMaxima FROM modelosCoches WHERE idModelo = " + idModelo;
+				String sql = "SELECT id_modelo, nombre, motor, caballos, peso, velocidad_max FROM monoplaza WHERE id_modelo = " + idModelo;
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);
 				
 				if (rs.next()) {
 					String nombre = rs.getString("nombre");
 					String motor = rs.getString("motor");
-					int potencia = rs.getInt("potencia");
+					int potencia = rs.getInt("caballos");
 					int peso = rs.getInt("peso");
-					int velocidad = rs.getInt("velocidadMaxima");
+					int velocidad = rs.getInt("velocidad_max");
 					
 					ModeloCoche coche = new ModeloCoche(idModelo, nombre, motor, potencia, peso, velocidad, null);
 					rs.close();
@@ -126,17 +126,17 @@ public class ModeloCochesDAO {
 		try {
 			Connection con = obtenerConexion();
 			if (con != null) {
-				String sql = "SELECT idModelo, nombre, motor, potencia, peso, velocidadMaxima FROM modelosCoches WHERE nombre LIKE '%" + nombre + "%'";
+				String sql = "SELECT id_modelo, nombre, motor, caballos, peso, velocidad_max FROM monoplaza WHERE nombre LIKE '%" + nombre + "%'";
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);
 				
 				while (rs.next()) {
-					int idModelo = rs.getInt("idModelo");
+					int idModelo = rs.getInt("id_modelo");
 					String nombreOb = rs.getString("nombre");
 					String motor = rs.getString("motor");
-					int potencia = rs.getInt("potencia");
+					int potencia = rs.getInt("caballos");
 					int peso = rs.getInt("peso");
-					int velocidad = rs.getInt("velocidadMaxima");
+					int velocidad = rs.getInt("velocidad_max");
 					
 					resultado.add(new ModeloCoche(idModelo, nombreOb, motor, potencia, peso, velocidad, null));
 				}
@@ -172,17 +172,17 @@ public class ModeloCochesDAO {
 		try {
 			Connection con = obtenerConexion();
 			if (con != null) {
-				String sql = "SELECT idModelo, nombre, motor, potencia, peso, velocidadMaxima FROM modelosCoches WHERE motor = '" + motor + "'";
+				String sql = "SELECT id_modelo, nombre, motor, caballos, peso, velocidad_max FROM monoplaza WHERE motor = '" + motor + "'";
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);
 				
 				while (rs.next()) {
-					int idModelo = rs.getInt("idModelo");
+					int idModelo = rs.getInt("id_modelo");
 					String nombre = rs.getString("nombre");
 					String motorOb = rs.getString("motor");
-					int potencia = rs.getInt("potencia");
+					int potencia = rs.getInt("caballos");
 					int peso = rs.getInt("peso");
-					int velocidad = rs.getInt("velocidadMaxima");
+					int velocidad = rs.getInt("velocidad_max");
 					
 					resultado.add(new ModeloCoche(idModelo, nombre, motorOb, potencia, peso, velocidad, null));
 				}

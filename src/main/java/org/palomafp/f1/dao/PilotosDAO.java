@@ -42,7 +42,7 @@ public class PilotosDAO {
 		try {
 			Connection con = obtenerConexion();
 			if (con != null) {
-				String sql = "SELECT numero, nombre, apellido, nacionalidad, fechaNacimiento, podios, victorias, campeonatos, poles FROM pilotos";
+				String sql = "SELECT numero, nombre, apellido, nacionalidad, fecha_nacimiento, podios, victorias, campeonatos, poles FROM piloto";
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);
 				
@@ -51,7 +51,7 @@ public class PilotosDAO {
 					String nombre = rs.getString("nombre");
 					String apellido = rs.getString("apellido");
 					String nacionalidad = rs.getString("nacionalidad");
-					Date fecha = new Date(rs.getDate("fechaNacimiento").getTime());
+					Date fecha = new Date(rs.getDate("fecha_nacimiento").getTime());
 					int podios = rs.getInt("podios");
 					int victorias = rs.getInt("victorias");
 					int campeonatos = rs.getInt("campeonatos");
@@ -95,7 +95,7 @@ public class PilotosDAO {
 		try {
 			Connection con = obtenerConexion();
 			if (con != null) {
-				String sql = "SELECT numero, nombre, apellido, nacionalidad, fechaNacimiento, podios, victorias, campeonatos, poles FROM pilotos WHERE numero = " + numero;
+				String sql = "SELECT numero, nombre, apellido, nacionalidad, fecha_nacimiento, podios, victorias, campeonatos, poles FROM piloto WHERE numero = " + numero;
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);
 				
@@ -103,7 +103,7 @@ public class PilotosDAO {
 					String nombre = rs.getString("nombre");
 					String apellido = rs.getString("apellido");
 					String nacionalidad = rs.getString("nacionalidad");
-					Date fecha = new Date(rs.getDate("fechaNacimiento").getTime());
+				Date fecha = new Date(rs.getDate("fecha_nacimiento").getTime());
 					int podios = rs.getInt("podios");
 					int victorias = rs.getInt("victorias");
 					int campeonatos = rs.getInt("campeonatos");
@@ -143,7 +143,7 @@ public class PilotosDAO {
 		try {
 			Connection con = obtenerConexion();
 			if (con != null) {
-				String sql = "SELECT numero, nombre, apellido, nacionalidad, fechaNacimiento, podios, victorias, campeonatos, poles FROM pilotos WHERE nacionalidad = '" + nacionalidad + "'";
+				String sql = "SELECT numero, nombre, apellido, nacionalidad, fecha_nacimiento, podios, victorias, campeonatos, poles FROM piloto WHERE nacionalidad = '" + nacionalidad + "'";
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);
 				
@@ -151,7 +151,7 @@ public class PilotosDAO {
 					int numero = rs.getInt("numero");
 					String nombre = rs.getString("nombre");
 					String apellido = rs.getString("apellido");
-					Date fecha = new Date(rs.getDate("fechaNacimiento").getTime());
+					Date fecha = new Date(rs.getDate("fecha_nacimiento").getTime());
 					int podios = rs.getInt("podios");
 					int victorias = rs.getInt("victorias");
 					int campeonatos = rs.getInt("campeonatos");
@@ -192,7 +192,7 @@ public class PilotosDAO {
 		try {
 			Connection con = obtenerConexion();
 			if (con != null) {
-				String sql = "SELECT numero, nombre, apellido, nacionalidad, fechaNacimiento, podios, victorias, campeonatos, poles FROM pilotos WHERE apellido LIKE '%" + apellido + "%'";
+				String sql = "SELECT numero, nombre, apellido, nacionalidad, fecha_nacimiento, podios, victorias, campeonatos, poles FROM piloto WHERE apellido LIKE '%" + apellido + "%'";
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);
 				
@@ -201,7 +201,7 @@ public class PilotosDAO {
 					String nombre = rs.getString("nombre");
 					String apYObtenido = rs.getString("apellido");
 					String nacionalidad = rs.getString("nacionalidad");
-					Date fecha = new Date(rs.getDate("fechaNacimiento").getTime());
+					Date fecha = new Date(rs.getDate("fecha_nacimiento").getTime());
 					int podios = rs.getInt("podios");
 					int victorias = rs.getInt("victorias");
 					int campeonatos = rs.getInt("campeonatos");
