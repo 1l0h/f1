@@ -1,6 +1,5 @@
 package org.palomafp.f1.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.palomafp.f1.config.DatabaseConfig;
@@ -20,31 +19,33 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*")
 public class TemporadaController {
 
-
+	@Autowired
+	private DatabaseConfig dbConfig;
 
 	/**
-	 * GET /api/temporadas - Obtiene todas las temporadas
+	 * GET /f1/temporadas - Obtiene todas las temporadas
 	 */
 	@GetMapping
-	public List<Temporada> obtenerTodas() {
+	public ResponseEntity<List<Temporada>> obtenerTodas() {
 		try {
-			TemporadaDAO dao = new TemporadaDAO();
+			TemporadaDAO dao = new TemporadaDAO(dbConfig.getUrl(), dbConfig.getUsuario(), dbConfig.getContrasena());
 			List<Temporada> temporadas = dao.obtenerTodasTemporadas();
-			return temporadas;
+			dao.cerrarConexion();
+			return ResponseEntity.ok(temporadas);
 		} catch (Exception e) {
-			System.out.println("No chuta");
-			return null;
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 
 	/**
-	 * GET /api/temporadas/{anio} - Obtiene una temporada por año
+	 * GET /f1/temporadas/{anio} - Obtiene una temporada por año
 	 */
 	@GetMapping("/{anio}")
 	public ResponseEntity<Temporada> obtenerPorAnio(@PathVariable int anio) {
 		try {
-			TemporadaDAO dao = new TemporadaDAO();
+			TemporadaDAO dao = new TemporadaDAO(dbConfig.getUrl(), dbConfig.getUsuario(), dbConfig.getContrasena());
 			Temporada temporada = dao.obtenerTemporadaPorAnio(anio);
+			dao.cerrarConexion();
 			if (temporada != null) {
 				return ResponseEntity.ok(temporada);
 			}
